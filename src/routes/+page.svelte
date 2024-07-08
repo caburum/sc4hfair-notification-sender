@@ -7,21 +7,22 @@
 	import Card, * as C from '@smui/card';
 	import { onMount } from 'svelte';
 	import { enhance } from '$app/forms';
-	import type { ActionData } from './$types';
+	import type { PageData, ActionData } from './$types';
 
+	export let data: PageData;
 	export let form: ActionData;
-	onMount(() => console.log(form));
 </script>
 
 <h1 style="text-align: center;">publish a new notification</h1>
-<form method="POST" action="?/create" use:enhance>
+<form method="POST" action="?/create" autocomplete="off" use:enhance>
 	<Card class="form">
 		<C.Content>
-			{#if form?.message}
+			{#if form?.action == 'create' && form?.message}
 				<p class="message">{form.message}</p>
 			{/if}
-			<Textfield input$maxlength={18} label="Title" input$name="title" value="" />
-			<Textfield textarea input$maxlength={18} label="Body" input$name="contentText" value="" />
+			<Textfield input$maxlength={120} label="Title" input$name="title" value="" />
+			<!-- todo: add markdown editor & image support (https://github.com/contentful/field-editors) -->
+			<Textfield textarea input$maxlength={50000} label="Body" input$name="contentText" value="" />
 		</C.Content>
 		<C.Actions>
 			<Button variant="raised" type="submit">
@@ -31,29 +32,29 @@
 	</Card>
 </form>
 
-<h1 style="text-align: center;">X notifications</h1>
-<p>todo:</p>
+<h1 style="text-align: center; margin-bottom: 0;">{data.entries.length} previous posts</h1>
+{#if form?.action == 'remove' && form?.message}
+	<p class="message">{form.message}</p>
+{/if}
 <LayoutGrid>
-	<!-- {#each $subscriptions.reverse() as subscription}
-			<Cell>
-				<Card>
-					<C.Content>
-						<SubInfoDisplay {subscription} />
-					</C.Content>
-					<C.Actions>
-						<Button
-							variant="raised"
-							on:click={() => {
-								subId = subscription._id;
-								sendNotifDialogOpen = true;
-							}}
-						>
-							<Label>Send Notification</Label>
+	{#each data.entries as entry}
+		<Cell>
+			<Card>
+				<C.Content>
+					<h3>{entry.title}</h3>
+					<p style="word-wrap: break-word;">{entry.contentText}</p>
+				</C.Content>
+				<C.Actions>
+					<form method="POST" action="?/remove" use:enhance>
+						<input type="hidden" name="id" value={entry.id} />
+						<Button variant="raised" type="submit">
+							<Label>remove</Label>
 						</Button>
-					</C.Actions>
-				</Card>
-			</Cell>
-		{/each} -->
+					</form>
+				</C.Actions>
+			</Card>
+		</Cell>
+	{/each}
 </LayoutGrid>
 
 <style lang="scss">

@@ -10,8 +10,8 @@
 			<TAB.Title>Fair Notification Sender</TAB.Title>
 		</TAB.Section>
 		<TAB.Section align="end" toolbar>
-			<IconButton class="material-icons" aria-label="Key" on:click={null}>key</IconButton>
-			<IconButton class="material-icons" aria-label="Refresh" on:click={null}>refresh</IconButton>
+			<!-- <IconButton class="material-icons" aria-label="Key" on:click={null}>key</IconButton>
+			<IconButton class="material-icons" aria-label="Refresh" on:click={null}>refresh</IconButton> -->
 		</TAB.Section>
 	</TAB.Row>
 </TopAppBar>
