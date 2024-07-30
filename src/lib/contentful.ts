@@ -14,4 +14,12 @@ export const client = contentful.createClient(
 	}
 );
 
-export const POST = 'post';
+export const POST_TYPE = 'post';
+
+export const getTags = () => {
+	const year = new Date().getFullYear();
+	if (year < 2022) return [];
+	return [year.toString()];
+};
+
+// todo: automatically add next year tag on submit if missing

@@ -3,6 +3,41 @@
 	--mdc-theme-surface: #181818;
 }
 
-body {
+html, body {
 	margin: 0;
+	height: 100%;
+	color-scheme: dark;
+}
+
+h1 {
+	text-align: center;
+}
+
+form {
+	display: grid;
+	place-items: center;
+}
+
+.message {
+	margin: 0;
+	text-align: center;
+	font-style: italic;
+}
+
+.form {
+	width: fit-content;
+	min-width: min(95%, 600px);
+}
+.form > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75em;
+	justify-content: center;
+}
+.form .mdc-text-field {
+	width: 100%;
+	// min-width: calc(350px - 16px);
+}
+.form input {
+	flex-grow: 1;
 }
