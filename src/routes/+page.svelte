@@ -3,13 +3,16 @@
 	import Card, * as C from '@smui/card';
 	import Dialog from '@smui/dialog';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
-	import { SPACE_ID } from '$lib/contentful';
+	import { postTypes, SPACE_ID, webhook } from '$lib/contentful';
 	import { handleSubmit, loading, editingForm } from '$lib/form';
 	import type { PageData, ActionData } from './$types';
 	import PostEditor from '$lib/PostEditor.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
+
+	// todo: move whole app into page? so action button don't get funky & we need less stores
+	$: $webhook = data.webhook;
 </script>
 
 <form method="POST" action="?/edit" autocomplete="off" on:submit|preventDefault={handleSubmit} class="form">
@@ -37,7 +40,6 @@
 
 {#if !data.authenticated}
 	<h1 style="margin-bottom: 0;">Loading previous posts</h1>
-	<!-- todo: spinner -->
 {:else}
 	<h1 style="margin-bottom: 0;">
 		{data.entries.length} previous post{data.entries.length == 1 ? '' : 's'}
@@ -56,7 +58,7 @@
 								href={`https://app.contentful.com/spaces/${SPACE_ID}/entries/${entry.id}`}
 								target="_blank"
 								style="color: inherit;">{entry.title}</a
-							>
+							> <small style="font-style: italic;">({postTypes[entry.type || 'normal']})</small>
 						</h3>
 						<!-- todo: render markdown -->
 						{#each entry.contentText.split('\n\n') as line}

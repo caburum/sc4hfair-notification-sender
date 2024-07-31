@@ -6,9 +6,14 @@
 	import '$lib/app.scss';
 	import { initialAuthPassword, reAuthenticateCallback } from '$lib/auth';
 	import Authenticate from '$lib/Authenticate.svelte';
+	import { webhook } from '$lib/contentful';
 	import { loading } from '$lib/form';
 	import LoadingRing from '$lib/LoadingRing.svelte';
 </script>
+
+<svelte:head>
+	<title>Fair Notification Sender</title>
+</svelte:head>
 
 <TopAppBar variant="static" style="position: sticky; top: 0;">
 	<TAB.Row>
@@ -17,10 +22,27 @@
 		</TAB.Section>
 		<TAB.Section align="end" toolbar style="overflow-x: hidden;">
 			<LoadingRing loading={$loading} />
-			<IconButton class="material-icons" aria-label="Logout" on:click={() => ($initialAuthPassword = undefined)}
-				>logout</IconButton
+			{#if $webhook !== undefined}
+				<IconButton
+					class="material-icons"
+					aria-label="Webhook Status"
+					title={$webhook ? 'Webhook enabled' : 'Webhook disabled'}
+					style="pointer-events: auto;"
+					disabled>{$webhook ? 'notifications_active' : 'notification_important'}</IconButton
+				>
+			{/if}
+			<IconButton
+				class="material-icons"
+				aria-label="Logout"
+				title="Logout"
+				on:click={() => {
+					$initialAuthPassword = undefined;
+					$webhook = undefined;
+				}}>logout</IconButton
 			>
-			<IconButton class="material-icons" aria-label="Refresh" on:click={() => invalidateAll()}>refresh</IconButton>
+			<IconButton class="material-icons" aria-label="Refresh" title="Refresh" on:click={() => invalidateAll()}
+				>refresh</IconButton
+			>
 		</TAB.Section>
 	</TAB.Row>
 </TopAppBar>

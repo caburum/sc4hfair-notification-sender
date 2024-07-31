@@ -41,9 +41,9 @@
 		value={initialData?.contentText || ''}
 	/>
 	{#if action === 'create'}
-		<Select key={(t) => `${t ? t.id : ''}`} label="Type" hiddenInput input$name="type" value="normal">
-			{#each postTypes as type}
-				<Option value={type.id}>{type.label}</Option>
+		<Select label="Type" hiddenInput input$name="type" value="normal">
+			{#each Object.entries(postTypes) as [id, label]}
+				<Option value={id}>{label}</Option>
 			{/each}
 		</Select>
 	{/if}
