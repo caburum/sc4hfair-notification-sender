@@ -1,5 +1,6 @@
 import { authenticate } from '$lib/auth.server';
-import { client as contentful, POST_TYPE, getTags } from '$lib/contentful';
+import { POST_TYPE, getTags } from '$lib/contentful';
+import { client as contentful } from '$lib/contentful.server';
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 

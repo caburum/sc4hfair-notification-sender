@@ -2,17 +2,13 @@
 	import Dialog from '@smui/dialog';
 	import IconButton from '@smui/icon-button';
 	import TopAppBar, * as TAB from '@smui/top-app-bar';
-	import '$lib/app.scss';
-	import Authenticate from '$lib/Authenticate.svelte';
-	import { initialAuthPassword, reAuthenticateCallback } from '$lib/auth';
 	import { invalidateAll } from '$app/navigation';
+	import '$lib/app.scss';
+	import { initialAuthPassword, reAuthenticateCallback } from '$lib/auth';
+	import Authenticate from '$lib/Authenticate.svelte';
+	import { loading } from '$lib/form';
+	import LoadingRing from '$lib/LoadingRing.svelte';
 </script>
-
-<Dialog open={$reAuthenticateCallback !== undefined} scrimClickAction="" escapeKeyAction="">
-	{#key $reAuthenticateCallback}
-		<Authenticate cancelable />
-	{/key}
-</Dialog>
 
 <TopAppBar variant="static" style="position: sticky; top: 0;">
 	<TAB.Row>
@@ -20,7 +16,7 @@
 			<TAB.Title>Fair Notification Sender</TAB.Title>
 		</TAB.Section>
 		<TAB.Section align="end" toolbar style="overflow-x: hidden;">
-			<!-- todo: fix icon -->
+			<LoadingRing loading={$loading} />
 			<IconButton class="material-icons" aria-label="Logout" on:click={() => ($initialAuthPassword = undefined)}
 				>logout</IconButton
 			>
@@ -36,6 +32,19 @@
 		<Authenticate />
 	{/if}
 </main>
+
+<Dialog
+	open={$reAuthenticateCallback !== undefined}
+	scrimClickAction=""
+	escapeKeyAction=""
+	on:SMUIDialog:closed={() => {
+		$reAuthenticateCallback?.(undefined);
+	}}
+>
+	{#key $reAuthenticateCallback}
+		<Authenticate cancelable />
+	{/key}
+</Dialog>
 
 <style lang="scss">
 	@use '@material/top-app-bar/_variables' as top-app-bar;

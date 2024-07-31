@@ -28,10 +28,13 @@ form {
 	width: fit-content;
 	min-width: min(95%, 600px);
 }
-.form > div {
+.formContent {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75em;
+	justify-content: center;
+}
+.form :is(.mdc-card__actions, .mdc-dialog__actions) {
 	justify-content: center;
 }
 .form .mdc-text-field {
@@ -40,4 +43,11 @@ form {
 }
 .form input {
 	flex-grow: 1;
+}
+
+.mdc-card__action--button {
+	margin: 0
+}
+.mdc-dialog__title {
+	text-align: center;
 }

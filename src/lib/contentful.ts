@@ -1,20 +1,13 @@
-import contentful from 'contentful-management';
-import { CONTENTFUL_MANAGEMENT_TOKEN } from '$env/static/private';
-
-export const client = contentful.createClient(
-	{
-		accessToken: CONTENTFUL_MANAGEMENT_TOKEN
-	},
-	{
-		type: 'plain',
-		defaults: {
-			spaceId: 'e34g9w63217k',
-			environmentId: 'master'
-		}
-	}
-);
+export const SPACE_ID = 'e34g9w63217k';
 
 export const POST_TYPE = 'post';
+
+export const postTypes = [
+	{ id: 'normal', label: 'Normal' },
+	{ id: 'emergency', label: 'Emergency Alert' },
+	{ id: 'silent', label: 'Silent (no notification, front page only)' }
+] as const;
+export type PostTypeKey = (typeof postTypes)[number]['id'];
 
 export const getTags = () => {
 	const year = new Date().getFullYear();

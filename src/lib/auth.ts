@@ -14,12 +14,14 @@ export const initialAuthPassword: Writable<string | undefined> = writable(
 initialAuthPassword.subscribe((password) => browser && sessionStorage.setItem('password', btoa(password || '')));
 
 // only dialog should read
-export const reAuthenticateCallback: Writable<((password: string) => void) | undefined> = writable(undefined);
+export const reAuthenticateCallback: Writable<((password: string | undefined) => void) | undefined> =
+	writable(undefined);
 
 export const requireAuth = () => {
-	return new Promise<string>((resolve) => {
+	return new Promise<string | undefined>((resolve) => {
 		reAuthenticateCallback.set((password) => {
-			resolve(password);
+			if (password) resolve(password);
+			else resolve(undefined);
 			reAuthenticateCallback.set(undefined);
 		});
 	});

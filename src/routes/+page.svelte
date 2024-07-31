@@ -1,55 +1,24 @@
 <script lang="ts">
 	import Button, { Label } from '@smui/button';
 	import Card, * as C from '@smui/card';
+	import Dialog from '@smui/dialog';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
-	import Textfield from '@smui/textfield';
-	import { applyAction, deserialize } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
-	import { requireAuth } from '$lib/auth';
+	import { SPACE_ID } from '$lib/contentful';
+	import { handleSubmit, loading, editingForm } from '$lib/form';
 	import type { PageData, ActionData } from './$types';
-	import type { ActionResult } from '@sveltejs/kit';
+	import PostEditor from '$lib/PostEditor.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
-
-	let loading = false;
-
-	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
-		loading = true;
-
-		const body = new FormData(event.currentTarget),
-			formElement = event.currentTarget;
-
-		const password = await requireAuth();
-		body.append('password', password);
-
-		const response = await fetch(formElement.action, {
-			method: 'POST',
-			body
-		});
-
-		if (!response.ok) {
-			form = {
-				message: `${response.status} ${response.statusText}: ${await response.clone().text()}` as any,
-				action: formElement.action.split('?/')[1] as any
-			};
-			loading = false;
-			return;
-		}
-
-		const result: ActionResult = deserialize(await response.text());
-
-		if (result.type === 'success') {
-			HTMLFormElement.prototype.reset.call(formElement);
-			// rerun all `load` functions, following the successful update
-			await invalidateAll();
-		}
-
-		applyAction(result);
-
-		loading = false;
-	}
 </script>
+
+<form method="POST" action="?/edit" autocomplete="off" on:submit|preventDefault={handleSubmit} class="form">
+	<Dialog open={$editingForm !== undefined} scrimClickAction="" escapeKeyAction="" surface$style="min-width: 600px">
+		{#key $editingForm}
+			<PostEditor action="edit" {form} />
+		{/key}
+	</Dialog>
+</form>
 
 <h1>Publish a New Notification</h1>
 <div style="width: fit-content; margin: 0 auto;">
@@ -59,22 +28,10 @@
 		<li>Phone notifications (subscribe in the app)</li>
 	</ul>
 </div>
+
 <form method="POST" action="?/create" autocomplete="off" on:submit|preventDefault={handleSubmit}>
 	<Card class="form">
-		<C.Content>
-			{#if form?.action == 'create' && form?.message}
-				<p class="message">{form.message}</p>
-			{/if}
-			<Textfield input$required input$maxlength={120} label="Title" input$name="title" value="" />
-			<!-- todo: add markdown editor & image support (https://github.com/contentful/field-editors) -->
-			<Textfield textarea input$maxlength={50000} label="Body" input$name="contentText" value="" />
-		</C.Content>
-		<C.Actions>
-			<Button variant="raised" type="submit" disabled={loading}>
-				<Label>Send Notification</Label>
-				<!-- todo: add loading indicator -->
-			</Button>
-		</C.Actions>
+		<PostEditor action="create" {form} />
 	</Card>
 </form>
 
@@ -85,7 +42,7 @@
 	<h1 style="margin-bottom: 0;">
 		{data.entries.length} previous post{data.entries.length == 1 ? '' : 's'}
 	</h1>
-	{#if form?.action == 'remove' && form?.message}
+	{#if (form?.action === 'remove' || form?.action === 'edit') && form?.message}
 		<p class="message">{form.message}</p>
 	{/if}
 	<LayoutGrid>
@@ -94,19 +51,33 @@
 				<!-- todo: don't waste so much space -->
 				<Card style="height: 100%;">
 					<C.Content>
-						<h3>{entry.title}</h3>
+						<h3>
+							<a
+								href={`https://app.contentful.com/spaces/${SPACE_ID}/entries/${entry.id}`}
+								target="_blank"
+								style="color: inherit;">{entry.title}</a
+							>
+						</h3>
 						<!-- todo: render markdown -->
 						{#each entry.contentText.split('\n\n') as line}
 							<p style="word-wrap: break-word;">{line}</p>
 						{/each}
 					</C.Content>
 					<C.Actions>
-						<form method="POST" action="?/remove" on:submit|preventDefault={handleSubmit}>
+						<form
+							class="mdc-card__action mdc-card__action--button"
+							method="POST"
+							action="?/remove"
+							on:submit|preventDefault={handleSubmit}
+						>
 							<input type="hidden" name="id" value={entry.id} />
-							<Button variant="raised" type="submit">
+							<Button variant="raised" type="submit" disabled={$loading}>
 								<Label>remove</Label>
 							</Button>
 						</form>
+						<Button variant="raised" disabled={$loading} on:click={() => editingForm.set(entry)}>
+							<Label>edit</Label>
+						</Button>
 					</C.Actions>
 				</Card>
 			</Cell>
