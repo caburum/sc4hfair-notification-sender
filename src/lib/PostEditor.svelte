@@ -31,7 +31,13 @@
 	{#if action === 'edit'}
 		<input type="hidden" name="id" value={initialData?.id} />
 	{/if}
-	<Textfield input$required input$maxlength={120} label="Title" input$name="title" value={initialData?.title || ''} />
+	<Textfield
+		input$required={true}
+		input$maxlength={120}
+		label="Title"
+		input$name="title"
+		value={initialData?.title || ''}
+	/>
 	<!-- todo: add markdown editor & image support (https://github.com/contentful/field-editors) -->
 	<Textfield
 		textarea

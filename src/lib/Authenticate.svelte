@@ -39,7 +39,14 @@
 	<D.Title>Access Restricted</D.Title>
 	<D.Content style="width: 100%">
 		<p style="margin-bottom: 0;">Enter your password to continue</p>
-		<Textfield input$required type="password" label="Password" input$name="password" value="" style="width: 100%" />
+		<Textfield
+			input$required={true}
+			type="password"
+			label="Password"
+			input$name="password"
+			value=""
+			style="width: 100%"
+		/>
 		{#if message}<p class="message">{message}</p>{/if}
 	</D.Content>
 	<D.Actions>

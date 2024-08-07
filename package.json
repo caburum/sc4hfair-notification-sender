@@ -42,6 +42,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@vercel/edge-config": "^1.2.1",
 		"contentful-management": "^11.27.6"
 	}
 }

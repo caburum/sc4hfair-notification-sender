@@ -8,7 +8,7 @@ export const actions = {
 	auth: async ({ request }) => {
 		const data = await request.formData();
 
-		const authRes = authenticate(data);
+		const authRes = await authenticate(data);
 		if (!authRes.authenticated) return fail(401, authRes);
 
 		return authRes;
@@ -17,7 +17,7 @@ export const actions = {
 		const res = { action: 'create' };
 		const data = await request.formData();
 
-		const authRes = authenticate(data);
+		const authRes = await authenticate(data);
 		if (!authRes.authenticated) return fail(401, authRes);
 
 		if (!data.has('title') || !data.has('contentText') || !data.has('type'))
@@ -61,7 +61,7 @@ export const actions = {
 		const res = { action: 'edit' };
 		const data = await request.formData();
 
-		const authRes = authenticate(data);
+		const authRes = await authenticate(data);
 		if (!authRes.authenticated) return fail(401, authRes);
 
 		if (!data.has('id') || !data.has('title') || !data.has('contentText'))
@@ -85,7 +85,7 @@ export const actions = {
 		const res = { action: 'remove' };
 		const data = await request.formData();
 
-		const authRes = authenticate(data);
+		const authRes = await authenticate(data);
 		if (!authRes.authenticated) return fail(401, authRes);
 
 		if (!data.has('id')) return fail(400, { ...res, message: 'missing required fields' });

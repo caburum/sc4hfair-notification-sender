@@ -19,7 +19,7 @@ export type State = {
 export const POST: RequestHandler = async ({ request }) => {
 	const data = await request.formData();
 
-	const authRes = authenticate(data);
+	const authRes = await authenticate(data);
 	if (!authRes.authenticated) return error(401, authRes);
 
 	const [entries, webhook] = await Promise.allSettled([
