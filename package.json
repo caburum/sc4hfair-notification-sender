@@ -14,6 +14,7 @@
 		"prepare": "smui-theme compile static/smui.css -i src/theme"
 	},
 	"devDependencies": {
+		"@material/typography": "^14.0.0",
 		"@smui/button": "^7.0.0",
 		"@smui/card": "^7.0.0",
 		"@smui/dialog": "^7.0.0",

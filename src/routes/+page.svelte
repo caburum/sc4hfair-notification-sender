@@ -58,7 +58,7 @@
 								href={`https://app.contentful.com/spaces/${SPACE_ID}/entries/${entry.id}`}
 								target="_blank"
 								style="color: inherit;">{entry.title}</a
-							> <small style="font-style: italic;">({postTypes[entry.type || 'normal']})</small>
+							><br /><small style="font-style: italic;">({postTypes[entry.type || 'normal']})</small>
 						</h3>
 						<!-- todo: render markdown -->
 						{#each entry.contentText.split('\n\n') as line}

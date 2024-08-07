@@ -6,15 +6,23 @@
 @use '@material/theme/index' as theme with (
 	$primary: #009959ff,
 	$secondary: color.scale(#676778, $whiteness: -10%),
-	$surface: color.adjust(color-palette.$grey-900, $blue: +4),
+	$surface: #181818,
 	$background: #000,
 	$error: color-palette.$red-700
 );
+
+@use '@material/typography/index' as typography with (
+	$font-family: unquote('DM Sans, sans-serif')
+);
+:root {
+	--mdc-typography-font-family: #{typography.$font-family};
+}
 
 html,
 body {
   background-color: #000;
   color: theme.$on-surface;
+	@include typography.typography('body1');
 }
 
 a {
@@ -22,4 +30,17 @@ a {
 }
 a:visited {
   color: color.scale(#40b3ff, $lightness: -35%);
+}
+
+small {
+  font-size: 0.9em;
+}
+
+big {
+  font-size: 1.1em;
+}
+
+b,
+strong {
+  font-weight: bold;
 }

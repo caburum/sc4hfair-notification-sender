@@ -4,6 +4,7 @@
 	import * as D from '@smui/dialog';
 	import Select, { Option } from '@smui/select';
 	import Textfield from '@smui/textfield';
+	import { autoGrowHeight } from '$lib/actions';
 	import { postTypes } from '$lib/contentful';
 	import { editingForm, loading } from '$lib/form';
 	import type { ActionData } from '../routes/$types';
@@ -38,6 +39,7 @@
 		input$rows={4}
 		label="Body"
 		input$name="contentText"
+		input$use={[autoGrowHeight]}
 		value={initialData?.contentText || ''}
 	/>
 	{#if action === 'create'}

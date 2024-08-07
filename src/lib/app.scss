@@ -1,8 +1,3 @@
-:root {
-	--mdc-typography-font-family: 'DM Sans', sans-serif;
-	--mdc-theme-surface: #181818;
-}
-
 html, body {
 	margin: 0;
 	height: 100%;
@@ -26,7 +21,12 @@ form {
 
 .form {
 	width: fit-content;
-	min-width: min(95%, 600px);
+	min-width: min(95%, 300px);
+}
+@media (min-width: 800px) {
+	.form {
+		min-width: min(95%, 600px);
+	}
 }
 .formContent {
 	display: flex;

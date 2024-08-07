@@ -35,7 +35,7 @@
 	};
 </script>
 
-<form method="POST" action="/?/auth" use:enhance={handler} style="min-width: 400px">
+<form method="POST" action="/?/auth" use:enhance={handler}>
 	<D.Title>Access Restricted</D.Title>
 	<D.Content style="width: 100%">
 		<p style="margin-bottom: 0;">Enter your password to continue</p>
