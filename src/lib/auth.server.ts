@@ -5,7 +5,7 @@ import { get as getEdgeConfig } from '@vercel/edge-config';
 // this needs to be secure enough that random people on the internet can't use it
 // but not so secure that it's difficult to give 4-h people access
 export const authenticate = async (data: FormData | string | undefined): Promise<AuthRes> => {
-	const passwords = (await getEdgeConfig<string[]>('passwords')) || [];
+	const passwords = (await getEdgeConfig<string[]>('sc4hfair-notification-sender-passwords')) || [];
 
 	let password;
 	if (typeof data === 'string') password = data;
